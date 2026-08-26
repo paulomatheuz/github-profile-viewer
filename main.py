@@ -8,8 +8,24 @@ def hifen_nas_bordas(username):
         return False
 
 
+def tem_caractere_invalido(username):
+    for caractere in username:
+        if not caractere.isascii() or (
+            not caractere.isalnum() and caractere != "-"
+        ):
+            return True
+
+    return False
+
+
 def username_valido(username):
-    if username == "" or len(username) > 39 or hifen_nas_bordas(username) or "--" in username:
+    if (
+        username == ""
+        or len(username) > 39
+        or hifen_nas_bordas(username)
+        or "--" in username
+        or tem_caractere_invalido(username)
+    ):
         return False
     else:
         return True
