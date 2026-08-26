@@ -1,10 +1,10 @@
-username = input("Digite um usuario do GitHub: ")
+username = input("Digite um usuario do GitHub: ").strip()
 
 def username_valido(username):
-	if username == "":
-		return False
-	else:
-		return True
+    if len(username) < 3:
+        return False
+    else:
+        return True
 
 user = username_valido(username)
 if user:
