@@ -34,36 +34,48 @@ def username_valido(username):
         return True
 
 
+def buscar_usuario(username):
+    url = "https://api.github.com/users/" + username
+    resposta = requests.get(url, timeout=10)
+
+    return resposta
+
+
 username = input("Digite um usuario do GitHub: ").strip()
 
 user = username_valido(username)
 
 if user:
-    url = "https://api.github.com/users/" + username
-    resposta = requests.get(url)
+    try:
+        resposta = buscar_usuario(username)
 
-    if resposta.status_code == 200:
-        dados = resposta.json()
+        if resposta.status_code == 200:
+            dados = resposta.json()
 
-        nome = dados.get("name") or "Não informado"
+            nome = dados.get("name") or "Não informado"
 
-        bio = dados.get("bio")
-        if bio:
-            bio = bio.strip()
+            bio = dados.get("bio")
+
+            if bio:
+                bio = bio.strip()
+            else:
+                bio = "Não informada"
+
+            print("Usuário:", dados.get("login"))
+            print("Nome:", nome)
+            print("Biografia:", bio)
+            print("Repositórios públicos:", dados.get("public_repos"))
+            print("Seguidores:", dados.get("followers"))
+
+        elif resposta.status_code == 404:
+            print("Usuário não encontrado")
+
         else:
-            bio = "Não informada"
+            print("Erro ao buscar usuário:", resposta.status_code)
 
-        print("Usuário:", dados.get("login"))
-        print("Nome:", nome)
-        print("Biografia:", bio)
-        print("Repositórios públicos:", dados.get("public_repos"))
-        print("Seguidores:", dados.get("followers"))
-
-    elif resposta.status_code == 404:
-        print("Usuário não encontrado")
-
-    else:
-        print("Erro ao buscar usuário:", resposta.status_code)
+    except requests.exceptions.RequestException as erro:
+        print("Erro de conexão")
+        print("Detalhes:", erro)
 
 else:
     print("Username invalido")
