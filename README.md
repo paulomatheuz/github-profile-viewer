@@ -1,37 +1,35 @@
 # GitHub Profile Viewer
 
-Projeto em Python para consultar e exibir informações públicas de usuários do GitHub através da API oficial do GitHub.
+Aplicação de terminal desenvolvida em Python para consultar e exibir informações públicas de usuários do GitHub através da GitHub REST API.
 
-O projeto está sendo desenvolvido de forma incremental com foco no aprendizado prático de Python, APIs, HTTP, JSON, Git e GitHub.
+O projeto foi construído de forma incremental com foco no aprendizado prático de Python, APIs, HTTP, JSON, Git e GitHub.
 
 ## Status
 
-🚧 Em desenvolvimento — pré-V1 funcional.
+✅ V1.0.0 concluída e publicada.
 
-Atualmente o programa já consegue validar um username, consultar a API do GitHub e exibir informações reais de um perfil.
+A primeira versão funcional do projeto já está disponível no GitHub e marcada com a tag `v1.0.0`.
 
-## Funcionalidades atuais
+## Funcionalidades
 
 - Entrada de username pelo terminal
-- Remoção de espaços extras com `strip()`
 - Validação básica do formato do username
+- Remoção de espaços extras
 - Limite máximo de 39 caracteres
-- Validação de hífen no início ou final
-- Validação de hífens consecutivos
+- Validação de hífens
 - Rejeição de caracteres inválidos
 - Rejeição de caracteres fora do padrão ASCII
 - Consulta à API pública do GitHub
-- Tratamento de usuário encontrado (`200`)
-- Tratamento de usuário inexistente (`404`)
-- Tratamento básico de outros status HTTP
-- Conversão da resposta JSON para dados Python
+- Tratamento de usuário inexistente
+- Tratamento de outros status HTTP
+- Tratamento de falhas de conexão e timeout
+- Tratamento de campos ausentes no perfil
 - Exibição de:
   - username
   - nome
   - biografia
-  - quantidade de repositórios públicos
+  - repositórios públicos
   - seguidores
-- Tratamento de nome ou biografia não informados
 
 ## Tecnologias
 
@@ -40,6 +38,8 @@ Atualmente o programa já consegue validar um username, consultar a API do GitHu
 - Git
 - GitHub
 - GitHub REST API
+- JSON
+- HTTP
 
 ## Como executar
 
@@ -72,7 +72,7 @@ python main.py
 Digite um username do GitHub quando solicitado:
 
 ```text
-Digite um usuario do GitHub: paulomatheuz
+Digite um usuário do GitHub: paulomatheuz
 ```
 
 Exemplo de saída:
@@ -85,18 +85,47 @@ Repositórios públicos: 7
 Seguidores: 11
 ```
 
-Os valores exibidos são obtidos diretamente da API do GitHub e podem mudar.
+Os dados são obtidos diretamente da API do GitHub e podem mudar.
 
-## Exemplo de usuário inexistente
+## Tratamento de erros
+
+Username inválido:
 
 ```text
-Digite um usuario do GitHub: usuario-que-nao-existe-123456789xyz
+Username inválido
+```
+
+Usuário inexistente:
+
+```text
 Usuário não encontrado
 ```
 
+Falha de conexão:
+
+```text
+Erro de conexão. Tente novamente.
+```
+
+Outros erros HTTP:
+
+```text
+Erro ao buscar usuário: <status>
+```
+
+## Estrutura do projeto
+
+```text
+github-profile-viewer/
+├── main.py
+└── README.md
+```
+
+A estrutura foi mantida simples de propósito para acompanhar a evolução gradual do projeto.
+
 ## Conceitos praticados
 
-Durante o desenvolvimento estou praticando:
+Durante o desenvolvimento deste projeto pratiquei:
 
 - variáveis e tipos
 - strings
@@ -108,39 +137,53 @@ Durante o desenvolvimento estou praticando:
 - funções
 - parâmetros e retornos
 - escopo de variáveis
+- validação de dados
+- tratamento de exceções
 - tratamento de dados ausentes
-- JSON
 - HTTP
 - requisições `GET`
 - status codes
 - consumo de APIs
+- JSON
+- biblioteca Requests
 - debugging
 - Git e GitHub
-- organização incremental de código
+- refatoração
+- separação de responsabilidades
 
-## Estrutura atual
+## Histórico de desenvolvimento
 
-```text
-github-profile-viewer/
-├── main.py
-└── README.md
-```
+O histórico de commits deste repositório foi mantido como uma linha do tempo da evolução do projeto e do meu aprendizado.
 
-A estrutura ainda é simples de propósito. O código será reorganizado conforme o projeto crescer e essa necessidade surgir naturalmente.
+A aplicação começou com uma validação simples de username e evoluiu gradualmente até:
 
-## Próximos passos
+- realizar requisições reais à API do GitHub;
+- interpretar respostas JSON;
+- tratar usuários inexistentes;
+- tratar falhas de conexão;
+- organizar responsabilidades em funções;
+- chegar à primeira versão funcional publicada.
 
-Algumas melhorias previstas para chegar à V1:
+## Versão atual
 
-- tratar erros de conexão
-- melhorar a organização das responsabilidades do código
-- melhorar a apresentação das informações no terminal
-- revisar casos extremos
-- realizar testes finais da aplicação
-- revisar documentação da V1
+`v1.0.0`
+
+Esta versão representa a primeira entrega funcional do projeto.
+
+## Próximas versões
+
+Possíveis evoluções futuras incluem:
+
+- exibição de repositórios públicos
+- linguagens utilizadas nos repositórios
+- testes automatizados
+- melhorias na interface de terminal
+- organização em múltiplos módulos
+- novas informações do perfil
+- melhorias no tratamento de erros
 
 ## Objetivo do projeto
 
-O objetivo não é apenas criar um visualizador de perfis.
+Mais do que construir um GitHub Profile Viewer, este projeto serviu como exercício prático para aprender a estruturar, testar, depurar, versionar e evoluir uma aplicação Python real.
 
-Este repositório também registra minha evolução aprendendo Python e desenvolvimento de software através da construção de um projeto real, mantendo um histórico de commits que acompanha essa evolução.
+O histórico do repositório também funciona como registro da minha evolução durante o desenvolvimento.
