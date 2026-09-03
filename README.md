@@ -6,9 +6,9 @@ O projeto foi construído de forma incremental com foco no aprendizado prático 
 
 ## Status
 
-✅ V1.0.0 concluída e publicada.
+✅ V1.0 concluída e publicada.
 
-A primeira versão funcional do projeto já está disponível no GitHub e marcada com a tag `v1.0.0`.
+A primeira versão funcional do projeto já está disponível no GitHub e marcada com a tag `v1.0`.
 
 ## Funcionalidades
 
@@ -166,7 +166,7 @@ A aplicação começou com uma validação simples de username e evoluiu gradual
 
 ## Versão atual
 
-`v1.0.0`
+`v1.0`
 
 Esta versão representa a primeira entrega funcional do projeto.
 
