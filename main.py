@@ -1,44 +1,7 @@
 import requests
 
-
-def hifen_nas_bordas(username):
-    if username == "":
-        return False
-
-    if username[0] == "-" or username[-1] == "-":
-        return True
-    else:
-        return False
-
-
-def tem_caractere_invalido(username):
-    for caractere in username:
-        if not caractere.isascii() or (
-            not caractere.isalnum() and caractere != "-"
-        ):
-            return True
-
-    return False
-
-
-def username_valido(username):
-    if (
-        username == ""
-        or len(username) > 39
-        or hifen_nas_bordas(username)
-        or "--" in username
-        or tem_caractere_invalido(username)
-    ):
-        return False
-    else:
-        return True
-
-
-def buscar_usuario(username):
-    url = "https://api.github.com/users/" + username
-    resposta = requests.get(url, timeout=10)
-
-    return resposta
+from github_client import buscar_usuario
+from validators import username_valido
 
 
 def mostrar_perfil(dados):
