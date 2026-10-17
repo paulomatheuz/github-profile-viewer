@@ -35,7 +35,7 @@ O desenvolvimento continua após a V1, com melhorias na organização do código
 
 ## Testes
 
-O projeto utiliza `pytest` para testar as regras de validação de username.
+O projeto utiliza `pytest` para testar as regras de validação de username e o fluxo principal da aplicação.
 
 Atualmente os testes cobrem casos como:
 
@@ -46,6 +46,17 @@ Atualmente os testes cobrem casos como:
 - caracteres inválidos
 - limite de 39 caracteres
 - username com mais de 39 caracteres
+- hífen no final e hífen válido no meio
+- espaços, acentos, underscore e caracteres fora do padrão ASCII
+- letras maiúsculas, números e username com um caractere
+
+Os testes do fluxo principal utilizam respostas simuladas, sem acessar a API real, e cobrem:
+
+- importação do módulo sem solicitar entrada ou consultar a API
+- consulta com sucesso e remoção de espaços nas bordas da entrada
+- username inválido sem realizar consulta
+- usuário inexistente e outros erros HTTP
+- falha de conexão e timeout
 
 Para executar os testes:
 
@@ -69,6 +80,7 @@ python -m pytest
 ```text
 github-profile-viewer/
 ├── tests/
+│   ├── test_main.py
 │   └── test_validators.py
 ├── .gitignore
 ├── github_client.py
@@ -81,6 +93,8 @@ github-profile-viewer/
 ### `main.py`
 
 Responsável por coordenar o fluxo principal da aplicação.
+
+A função `main()` é executada apenas quando o arquivo é iniciado diretamente, permitindo importar o módulo nos testes sem solicitar entrada no terminal.
 
 ### `validators.py`
 
