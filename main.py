@@ -21,26 +21,31 @@ def mostrar_perfil(dados):
     print("Seguidores:", dados.get("followers"))
 
 
-username = input("Digite um usuário do GitHub: ").strip()
+def main():
+    username = input("Digite um usuário do GitHub: ").strip()
 
-user = username_valido(username)
+    user = username_valido(username)
 
-if user:
-    try:
-        resposta = buscar_usuario(username)
+    if user:
+        try:
+            resposta = buscar_usuario(username)
 
-        if resposta.status_code == 200:
-            dados = resposta.json()
-            mostrar_perfil(dados)
+            if resposta.status_code == 200:
+                dados = resposta.json()
+                mostrar_perfil(dados)
 
-        elif resposta.status_code == 404:
-            print("Usuário não encontrado")
+            elif resposta.status_code == 404:
+                print("Usuário não encontrado")
 
-        else:
-            print("Erro ao buscar usuário:", resposta.status_code)
+            else:
+                print("Erro ao buscar usuário:", resposta.status_code)
 
-    except requests.exceptions.RequestException:
-        print("Erro de conexão. Tente novamente.")
+        except requests.exceptions.RequestException:
+            print("Erro de conexão. Tente novamente.")
 
-else:
-    print("Username inválido")
+    else:
+        print("Username inválido")
+
+
+if __name__ == "__main__":
+    main()
