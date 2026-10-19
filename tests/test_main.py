@@ -75,12 +75,16 @@ def test_main_trata_erro_http(monkeypatch, capsys, status, mensagem):
 
 
 @pytest.mark.parametrize(
-    "erro", [requests.exceptions.ConnectionError, requests.exceptions.Timeout]
+    "erro, mensagem",
+    [
+        (requests.exceptions.ConnectionError, "Erro de conexão. Tente novamente.\n"),
+        (requests.exceptions.Timeout, "A consulta demorou demais. Tente novamente.\n"),
+    ],
 )
-def test_main_trata_falha_na_consulta(monkeypatch, capsys, erro):
+def test_main_trata_falha_na_consulta(monkeypatch, capsys, erro, mensagem):
     monkeypatch.setattr("builtins.input", lambda mensagem: "paulomatheuz")
     monkeypatch.setattr(main, "buscar_usuario", Mock(side_effect=erro))
 
     main.main()
 
-    assert capsys.readouterr().out == "Erro de conexão. Tente novamente.\n"
+    assert capsys.readouterr().out == mensagem

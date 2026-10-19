@@ -34,6 +34,9 @@ def main():
             else:
                 print("Erro ao buscar usuário:", resposta.status_code)
 
+        except requests.exceptions.Timeout:
+            print("A consulta demorou demais. Tente novamente.")
+
         except requests.exceptions.RequestException:
             print("Erro de conexão. Tente novamente.")
 
