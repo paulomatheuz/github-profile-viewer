@@ -88,3 +88,27 @@ def test_main_trata_falha_na_consulta(monkeypatch, capsys, erro, mensagem):
     main.main()
 
     assert capsys.readouterr().out == mensagem
+
+
+@pytest.mark.parametrize(
+    "status, headers, mensagem",
+    [
+        (429, {}, "Limite de consultas atingido. Tente novamente mais tarde.\n"),
+        (
+            403,
+            {"X-RateLimit-Remaining": "0"},
+            "Limite de consultas atingido. Tente novamente mais tarde.\n",
+        ),
+        (403, {}, "Erro ao buscar usuário: 403\n"),
+        (403, {"X-RateLimit-Remaining": "5"}, "Erro ao buscar usuário: 403\n"),
+    ],
+)
+def test_main_trata_limite_de_consultas(monkeypatch, capsys, status, headers, mensagem):
+    resposta = Mock(status_code=status, headers=headers)
+    monkeypatch.setattr("builtins.input", lambda mensagem: "paulomatheuz")
+    monkeypatch.setattr(main, "buscar_usuario", Mock(return_value=resposta))
+
+    main.main()
+
+    resposta.json.assert_not_called()
+    assert capsys.readouterr().out == mensagem

@@ -31,6 +31,12 @@ def main():
             elif resposta.status_code == 404:
                 print("Usuário não encontrado")
 
+            elif resposta.status_code == 429 or (
+                resposta.status_code == 403
+                and resposta.headers.get("X-RateLimit-Remaining") == "0"
+            ):
+                print("Limite de consultas atingido. Tente novamente mais tarde.")
+
             else:
                 print("Erro ao buscar usuário:", resposta.status_code)
 
