@@ -5,14 +5,8 @@ from validators import username_valido
 
 
 def mostrar_perfil(dados):
-    nome = dados.get("name") or "Não informado"
-
-    bio = dados.get("bio")
-
-    if bio:
-        bio = bio.strip()
-    else:
-        bio = "Não informada"
+    nome = (dados.get("name") or "").strip() or "Não informado"
+    bio = (dados.get("bio") or "").strip() or "Não informada"
 
     print("Usuário:", dados.get("login"))
     print("Nome:", nome)
