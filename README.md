@@ -25,7 +25,9 @@ O desenvolvimento continua após a V1, com melhorias na organização do código
 - Tratamento de usuário inexistente (`404`)
 - Tratamento de outros status HTTP
 - Tratamento de falhas de conexão e timeout
-- Tratamento de campos ausentes no perfil
+- Mensagem específica para consultas que excedem o timeout
+- Tratamento do limite de consultas (`429` ou `403` com `X-RateLimit-Remaining: 0`)
+- Tratamento de nome e biografia ausentes, vazios ou contendo apenas espaços
 - Exibição de:
   - username
   - nome
@@ -35,7 +37,7 @@ O desenvolvimento continua após a V1, com melhorias na organização do código
 
 ## Testes
 
-O projeto utiliza `pytest` para testar as regras de validação de username e o fluxo principal da aplicação.
+O projeto utiliza `pytest` para testar a validação de username, a apresentação do perfil, o cliente HTTP e o fluxo principal da aplicação.
 
 Atualmente os testes cobrem casos como:
 
@@ -57,6 +59,11 @@ Os testes do fluxo principal utilizam respostas simuladas, sem acessar a API rea
 - username inválido sem realizar consulta
 - usuário inexistente e outros erros HTTP
 - falha de conexão e timeout
+- limite de consultas, sem confundir outros erros `403` com limite esgotado
+
+Os testes de apresentação verificam nome e biografia ausentes ou vazios e a remoção de espaços nas bordas.
+
+Os testes de `github_client.py` simulam `requests.get` para verificar a URL, o timeout de 10 segundos, o retorno da resposta HTTP e a propagação de falhas de rede para o fluxo principal. Todos esses testes funcionam sem requisições reais.
 
 Para executar os testes:
 
@@ -80,7 +87,9 @@ python -m pytest
 ```text
 github-profile-viewer/
 ├── tests/
+│   ├── test_github_client.py
 │   ├── test_main.py
+│   ├── test_perfil.py
 │   └── test_validators.py
 ├── .gitignore
 ├── github_client.py
@@ -172,6 +181,20 @@ Falha de conexão:
 Erro de conexão. Tente novamente.
 ```
 
+Tempo limite excedido:
+
+```text
+A consulta demorou demais. Tente novamente.
+```
+
+Limite de consultas atingido:
+
+```text
+Limite de consultas atingido. Tente novamente mais tarde.
+```
+
+Essa mensagem é exibida para respostas `429` ou `403` com o cabeçalho `X-RateLimit-Remaining` igual a `0`. Outros erros HTTP continuam exibindo o código recebido. A aplicação não repete a consulta automaticamente.
+
 ## Conceitos praticados
 
 Durante o desenvolvimento deste projeto pratiquei:
@@ -227,7 +250,6 @@ O código presente na branch `master` pode conter melhorias realizadas após ess
 Possíveis evoluções futuras:
 
 - ampliar a cobertura de testes
-- testar o cliente da API sem depender de requisições reais
 - exibir repositórios públicos
 - exibir linguagens utilizadas
 - melhorar a interface do terminal
